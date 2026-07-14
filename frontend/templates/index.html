@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinGuard | AI Fraud Detection Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <span class="logo">🛡️</span>
+      <div>
+        <h1>FinGuard</h1>
+        <p>AI-Powered Financial Fraud Detection</p>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <span class="status-pill"><span class="status-dot"></span> System Online</span>
+      <button id="theme-toggle" title="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- KPI Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <p class="kpi-label">Total Transactions</p>
+        <h2 id="total-txn">0</h2>
+      </div>
+      <div class="kpi-card danger">
+        <p class="kpi-label">Fraudulent Transactions</p>
+        <h2 id="fraud-txn">0</h2>
+      </div>
+      <div class="kpi-card success">
+        <p class="kpi-label">Safe Transactions</p>
+        <h2 id="safe-txn">0</h2>
+      </div>
+      <div class="kpi-card warning">
+        <p class="kpi-label">Fraud Percentage</p>
+        <h2 id="fraud-pct">0%</h2>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <!-- Transaction Analysis Form -->
+      <div class="card">
+        <p class="card-eyebrow">Risk Scoring</p>
+        <h2>Analyze Transaction</h2>
+        <form id="txn-form">
+          <div class="form-row">
+            <input type="text" id="sender_name" placeholder="Sender Name" required>
+            <input type="text" id="receiver_name" placeholder="Receiver Name" required>
+          </div>
+          <div class="form-row">
+            <input type="number" id="amount" placeholder="Amount ($)" step="0.01" min="0.01" required>
+            <input type="number" id="customer_age" placeholder="Customer Age" min="18" max="100" required>
+          </div>
+          <div class="form-row">
+            <select id="merchant_category" required>
+              <option value="">Merchant Category</option>
+              <option>Grocery</option><option>Electronics</option><option>Travel</option>
+              <option>Online Retail</option><option>Gas Station</option><option>Restaurant</option>
+              <option>Jewelry</option><option>Crypto Exchange</option><option>Gambling</option>
+            </select>
+            <select id="transaction_type" required>
+              <option value="">Transaction Type</option>
+              <option>Purchase</option><option>Transfer</option><option>Withdrawal</option>
+              <option>Deposit</option><option>Bill Payment</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <select id="device_type" required>
+              <option value="">Device Type</option>
+              <option>Mobile - Known</option><option>Mobile - New</option>
+              <option>Desktop - Known</option><option>Desktop - New</option><option>ATM</option>
+            </select>
+            <select id="location" required>
+              <option value="">Location</option>
+              <option>New York</option><option>Los Angeles</option><option>Chicago</option>
+              <option>Houston</option><option>Miami</option><option>Dallas</option>
+              <option>Seattle</option><option>Unknown/Foreign</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <input type="number" id="transaction_hour" placeholder="Transaction Hour (0-23)" min="0" max="23" required>
+            <select id="payment_method" required>
+              <option value="">Payment Method</option>
+              <option>Debit Card</option><option>Credit Card</option><option>Wire Transfer</option>
+              <option>ACH</option><option>Cryptocurrency</option>
+            </select>
+          </div>
+          <label class="checkbox-row">
+            <input type="checkbox" id="previous_fraud_history">
+            Customer has previous fraud history
+          </label>
+          <button type="submit" id="analyze-btn">Analyze Transaction</button>
+        </form>
+        <div id="result-card" class="result-card hidden"></div>
+      </div>
+
+      <!-- Risk Distribution Chart -->
+      <div class="card">
+        <p class="card-eyebrow">Portfolio Overview</p>
+        <h2>Risk Distribution</h2>
+        <canvas id="riskChart" height="220"></canvas>
+        <div id="loading-indicator" class="loading hidden">Loading dashboard data…</div>
+      </div>
+    </section>
+
+    <!-- Transaction History -->
+    <section class="card">
+      <div class="history-header">
+        <div>
+          <p class="card-eyebrow">Audit Trail</p>
+          <h2>Transaction History</h2>
+        </div>
+        <div class="controls">
+          <input type="text" id="search-user" placeholder="Search by user...">
+          <select id="filter-risk">
+            <option value="">All Risk Levels</option>
+            <option>Low Risk</option><option>Medium Risk</option><option>High Risk</option>
+          </select>
+          <button onclick="loadHistory()">Search</button>
+          <a href="/api/transactions/export"><button type="button" class="btn-outline">Export CSV</button></a>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="history-table">
+          <thead>
+            <tr><th>Date</th><th>Sender</th><th>Amount</th><th>Risk</th><th>Confidence</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>FinGuard v1.0 — Built for demonstration purposes. Not a real banking system.</footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

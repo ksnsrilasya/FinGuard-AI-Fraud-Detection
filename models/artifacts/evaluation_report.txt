@@ -1,0 +1,13 @@
+FinGuard Model Evaluation
+========================================
+
+              precision    recall  f1-score   support
+
+       Legit       0.99      0.95      0.97      5724
+       Fraud       0.44      0.74      0.55       276
+
+    accuracy                           0.94      6000
+   macro avg       0.71      0.85      0.76      6000
+weighted avg       0.96      0.94      0.95      6000
+
+ROC-AUC: 0.9598
