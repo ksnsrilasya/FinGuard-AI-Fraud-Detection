@@ -14,6 +14,12 @@ FinGuard automates this process by analyzing transaction patterns and classifyin
 
 ---
 
+## 🌐 Live Demo
+
+🔗 https://finguard-ai-fraud-detection.onrender.com
+
+---
+
 ## ✨ Features
 
 - AI-powered fraud prediction using Machine Learning
